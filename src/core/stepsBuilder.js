@@ -34,7 +34,6 @@ export let Builder = (function(){
 	}
 
 	Builder.prototype.nextStep = function(){
-		console.log(this.currentStep);
 		if(this.currentStep+1 < this.steps.length){
 			
 			this.currentStep++;
@@ -90,10 +89,7 @@ export let Builder = (function(){
 
 				// process data from the store, build the next step;
 				if(action && typeof action == 'function') action();
-				if(next && typeof next == 'function') {
-					console.log('---here');
-					next();
-				}
+				if(next && typeof next == 'function') next();
 			};
 
 		$body.append($stepOneDiv);
@@ -103,7 +99,7 @@ export let Builder = (function(){
 
 
 	Builder.prototype.initCategoryInputs = function(action, next, currentStep){
-		console.log('here');
+		
 
 		let categories = this.store.getCategories();
 		$stepTwoDiv = document.createElement('div');
@@ -157,8 +153,13 @@ export let Builder = (function(){
 		$body.append($stepTwoDiv);
 	}
 
-	Builder.prototype.log = function(action, next){
-
+	Builder.prototype.log = function(action, next, currentStep){
+		if(action && typeof action == 'function') action();
+		if(this.currentStep != currentStep){
+			this.currentStep=currentStep;
+			if($body.contains($stepThreeDiv)) $body.removeChild($stepThreeDiv);
+			this.store.clearLogs();
+		}
 	}
 
 	return Builder;

@@ -4,7 +4,7 @@ export let Store=(function(){
 		this.data = "";
 		this.initialData = "";
 		this.categories = [];
-		this.categoriesOptions = {};
+		this.categoriesOptions = [];
 		this.log = [];
 	};
 
@@ -17,7 +17,8 @@ export let Store=(function(){
 	}	
 
 	Store.prototype.setCategories = function(categories){
-		this.categories = categories;
+		if(!categories) this.categories = [];
+		else this.categories = categories;
 	}
 
 	Store.prototype.getCategories = function(){
@@ -31,9 +32,9 @@ export let Store=(function(){
 	Store.prototype.getCategoriesOptions = function(){
 		return this.categoriesOptions;
 	}
-	
+
 	Store.prototype.clearCategoriesOptions = function(){
-		this.categoriesOptions={};
+		this.categoriesOptions=[];
 	}
 
 	Store.prototype.clearLogs = function(){
@@ -46,6 +47,10 @@ export let Store=(function(){
 
 	Store.prototype.setInitialData = function(data) {
 		this.initialData = data;
+	}
+
+	Store.prototype.getInitialData = function(){
+		return this.initialData;
 	}
 
 	return Store;
