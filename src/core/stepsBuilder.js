@@ -154,22 +154,28 @@ export let Builder = (function(){
 	}
 
 	Builder.prototype.log = function(action, next, currentStep){
-		if(action && typeof action == 'function') action();
 		if(this.currentStep != currentStep){
 			this.currentStep=currentStep;
 			if($body.contains($stepThreeDiv)) $body.removeChild($stepThreeDiv);
 			this.store.clearLogs();
 		}
+		if(action && typeof action == 'function') action();
+
+		let logs = this.store.getLogs();
+
+		let $logs = logs.map(log => {
+			let l = document.createElement('p');
+				l.innerHTML = log;
+			return l;
+		});
+
+		$stepThreeDiv = document.createElement('div');
+		$stepThreeDiv.setAttribute('class', 'form-group');
+
+		$logs.map($log=>$stepThreeDiv.append($log));
+		$body.append($stepThreeDiv);
 	}
 
-
-
-	function createUniqueArr(a) {
-	    var temp = {};
-	    for (var i = 0; i < a.length; i++)
-	        temp[a[i]] = true;
-	    return Object.keys(temp);
-	}
 
 	return Builder;
 })();

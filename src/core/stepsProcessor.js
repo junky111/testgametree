@@ -15,8 +15,8 @@ export let Processor = (function(){
 
 	Processor.prototype.parseCategories = function(){
 		let data = this.store.getData();
-		data="Above Grade Level delivery  || [method] [method] || quality tutoring assistance with some of the best [subject] tutors in [location].";
-		this.store.setInitialData(data);
+		// data="Above Grade Level delivery  || [method] [method] || quality tutoring assistance with some of the best [subject] tutors in [location].";
+		// this.store.setInitialData(data);
 		this.store.setCategories(
 			this.store.createUniqueArr(
 				data.match(REGEXP_MATCH_BRACKETS_DATA)
