@@ -5,7 +5,8 @@ export let Builder = (function(){
 	let $stepOneDiv;
 	let $stepTwoDiv;
 	let $stepThreeDiv;
-	let $body = document.body;
+	let $container;
+
 
 	function Builder(processor, store){
 		this.currentStep=0;
@@ -42,12 +43,18 @@ export let Builder = (function(){
 	}
 	
 	Builder.prototype.init = function(){
+		this.initContainer();
 		this.draw(this.steps[this.getCurrentStep()], this.getCurrentStep());
 	}	
 
 	
 	/** DOM operations **/
 
+	Builder.prototype.initContainer = function(){
+		$container = document.createElement('div');
+		$container.setAttribute('class', 'container');
+		document.body.append($container);
+	}
 	
 	/**
 	 * Creates the first input. Where the categories will be set. 
@@ -58,7 +65,9 @@ export let Builder = (function(){
 	 */
 	Builder.prototype.initInput = function(action, next, currentStep){
 		$stepOneDiv = document.createElement('div');
-		$stepOneDiv.setAttribute('class', 'form-group');
+		$stepOneDiv.setAttribute('class', 'row');
+
+		let div = getFormGroupDiv();
 
 		let input = document.createElement('textarea');
 			input.setAttribute('class', 'form-control');
@@ -68,7 +77,8 @@ export let Builder = (function(){
 			button.setAttribute('class', 'btn btn-info');
 			button.onclick = ()=>{
 				// get input data;
-				let data = input.value;
+				let data = input.value ? input.value : "";
+				console.log(data);
 
 				// set to the global store;
 				this.store.setData(data);
@@ -80,8 +90,8 @@ export let Builder = (function(){
 				if(this.currentStep != currentStep){
 					this.currentStep=currentStep;
 
-					if($body.contains($stepTwoDiv)) $body.removeChild($stepTwoDiv);
-					if($body.contains($stepThreeDiv)) $body.removeChild($stepThreeDiv);
+					if($container.contains($stepTwoDiv)) $container.removeChild($stepTwoDiv);
+					if($container.contains($stepThreeDiv)) $container.removeChild($stepThreeDiv);
 					
 					this.store.clearCategoriesOptions();
 					this.store.clearLogs();
@@ -92,9 +102,13 @@ export let Builder = (function(){
 				if(next && typeof next == 'function') next();
 			};
 
-		$body.append($stepOneDiv);
-		$stepOneDiv.append(input);
-		$stepOneDiv.append(button);
+		let buttonDiv = getFormGroupDiv();
+		buttonDiv.append(button);
+		
+		div.append(input);
+		$container.append($stepOneDiv);
+		$stepOneDiv.append(div);
+		$stepOneDiv.append(buttonDiv);
 	}
 
 
@@ -102,15 +116,16 @@ export let Builder = (function(){
 		
 
 		let categories = this.store.getCategories();
+		if(!categories.length) return;
+
 		$stepTwoDiv = document.createElement('div');
-		$stepTwoDiv.setAttribute('class', 'form-group');
+		$stepTwoDiv.setAttribute('class', 'row');
 		let domCategories = [];
 
 		for(let i=0 ;i<categories.length; i++){
-			let container = document.createElement('div');
-				container.setAttribute('class', 'form-group');
+			let container = getFormGroupDiv();
 			let label = document.createElement('label');
-				label.setAttribute('class', 'form-control');
+				// label.setAttribute('class', 'control-label');
 				label.innerHTML = categories[i] + ":";
 			let textarea = document.createElement('textarea');
 				textarea.setAttribute('class', 'form-control');
@@ -139,7 +154,7 @@ export let Builder = (function(){
 				// if will be clicked on the other button (not next button).
 				if(this.currentStep != currentStep){
 					this.currentStep=currentStep;
-					if($body.contains($stepThreeDiv)) $body.removeChild($stepThreeDiv);
+					if($container.contains($stepThreeDiv)) $container.removeChild($stepThreeDiv);
 					this.store.clearLogs();
 				}
 
@@ -148,15 +163,17 @@ export let Builder = (function(){
 				if(next && typeof next == 'function') next();
 			};
 		
-		$stepTwoDiv.append(button);
+		let buttonDiv = getFormGroupDiv();
+		buttonDiv.append(button);
+		$stepTwoDiv.append(buttonDiv);
 
-		$body.append($stepTwoDiv);
+		$container.append($stepTwoDiv);
 	}
 
 	Builder.prototype.log = function(action, next, currentStep){
 		if(this.currentStep != currentStep){
 			this.currentStep=currentStep;
-			if($body.contains($stepThreeDiv)) $body.removeChild($stepThreeDiv);
+			if($container.contains($stepThreeDiv)) $container.removeChild($stepThreeDiv);
 			this.store.clearLogs();
 		}
 		if(action && typeof action == 'function') action();
@@ -164,18 +181,29 @@ export let Builder = (function(){
 		let logs = this.store.getLogs();
 
 		let $logs = logs.map(log => {
+			let blockquote = document.createElement('blockquote');
 			let l = document.createElement('p');
 				l.innerHTML = log;
-			return l;
+			blockquote.append(l);
+			return blockquote;
 		});
 
 		$stepThreeDiv = document.createElement('div');
-		$stepThreeDiv.setAttribute('class', 'form-group');
+		$stepThreeDiv.setAttribute('class', 'row');
 
-		$logs.map($log=>$stepThreeDiv.append($log));
-		$body.append($stepThreeDiv);
+		let div = getFormGroupDiv();
+
+		$logs.map($log=>div.append($log));
+		$stepThreeDiv.append(div);
+		$container.append($stepThreeDiv);
 	}
 
+
+	function getFormGroupDiv(){
+		let div = document.createElement('div');
+			div.setAttribute('class', 'form-group');
+		return div;
+	}
 
 	return Builder;
 })();

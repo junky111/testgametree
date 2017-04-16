@@ -19,7 +19,8 @@ var plugins = [
             NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
         }
     }),
-    new ExtractTextPlugin(publicPath+"/"+cssName)
+    new ExtractTextPlugin(cssName),
+    new ExtractTextPlugin('main.css')
 ];
 
 if (process.env.NODE_ENV === 'production') {

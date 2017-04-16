@@ -17,9 +17,13 @@ export let Processor = (function(){
 		let data = this.store.getData();
 		// data="Above Grade Level delivery  || [method] [method] || quality tutoring assistance with some of the best [subject] tutors in [location].";
 		// this.store.setInitialData(data);
+		
+		let matchResults = data.match(REGEXP_MATCH_BRACKETS_DATA);
+		if(!matchResults) matchResults=[];
+
 		this.store.setCategories(
 			this.store.createUniqueArr(
-				data.match(REGEXP_MATCH_BRACKETS_DATA)
+				matchResults
 			)
 		);
 	};
