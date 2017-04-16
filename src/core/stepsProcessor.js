@@ -19,9 +19,9 @@ export let Processor = (function(){
 
 	/**
 	 * Gets action by the name in the step.
-	 * @param  {String} step 			- action name.
-	 * @example 						- parseCategories
-	 * @return {Function || undefined} 	- Processor function, if it exists.
+	 * @param  {String} step - action name.
+	 * @example - parseCategories
+	 * @return {Function || undefined} - Processor function, if it exists.
 	 */
 	Processor.prototype.getActionByStep = function(step){
 		if(this[step]) return this[step];
@@ -96,13 +96,12 @@ export let Processor = (function(){
 			for(let j in results[i]){
 				let category=this.store.getCategories()[j];
 				// replace category name with option by option index from result array.
-				strResults[strResults.length-1] = strResults[strResults.length-1]
-													.replace(
-														// find all matches.
-														new RegExp('\\['+category+'\\]','g'),
-														// option to paste
-														results[i][j]
-													);			
+				strResults[strResults.length-1] = strResults[strResults.length-1].replace(
+													// find all matches.
+													new RegExp('\\['+category+'\\]','g'),
+													// option to paste
+													results[i][j]
+												);			
 			}
 		}
 
@@ -112,8 +111,8 @@ export let Processor = (function(){
 
 	/**
 	 * Get all possible combinations in the array of arrays 
-	 * @param  { Array { Array, Array, .. } } arraysToCombine  - arrays is necessary to combine.
-	 * @return {Array} 										   - all possible combinations.
+	 * @param  { Array { Array, Array, .. } } arraysToCombine - arrays is necessary to combine.
+	 * @return {Array} - all possible combinations.
 	 */
 	function getAllCombinations(arraysToCombine) {
 		let divisors = [];
@@ -123,9 +122,9 @@ export let Processor = (function(){
 
 		/**
 		 * Get permutation for permutation number from arrays to combine.
-		 * @param  {int} n              							- number of permutation.
-		 * @param  { Array { Array, Array, .. } } arraysToCombine   - arrays is necessary to combine.
-		 * @return { Array }                						- all combinations of permutation.
+		 * @param  {int} n  - number of permutation.
+		 * @param  { Array { Array, Array, .. } } arraysToCombine - arrays is necessary to combine.
+		 * @return { Array } - all combinations of permutation.
 		 */
 		function getPermutation(n, arraysToCombine) {
 		    let result = [], 

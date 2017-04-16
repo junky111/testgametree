@@ -144,7 +144,7 @@ export let Builder = (function(){
 	 * Creates the first input. Where the categories will be set. 
 	 * Build the DOM.
 	 * @param  {Function} action 	- function of Processor. Parse data from the global store.
-	 * @param  {Function} next 	- function of Builder. Build the next step. 
+	 * @param  {Function} next 		- function of Builder. Build the next step. 
 	 * @return {undefined}
 	 */
 	Builder.prototype.initInput = function(action, next, currentStep){
@@ -153,36 +153,36 @@ export let Builder = (function(){
 		let div = getDiv('form-group');
 
 		let input = document.createElement('textarea');
-			input.setAttribute('class', 'form-control');
+		input.setAttribute('class', 'form-control');
 
 		let button = document.createElement('button');
-			button.innerHTML = "Submit";
-			button.setAttribute('class', 'btn btn-info');
-			button.onclick = ()=>{
-				// get input data;
-				let data = input.value ? input.value : "";
-				
-				// set to the global store;
-				this.store.setData(data);
+		button.innerHTML = "Submit";
+		button.setAttribute('class', 'btn btn-info');
+		button.onclick = ()=>{
+			// get input data;
+			let data = input.value ? input.value : "";
 
-				// set as initial data to the global store. Will use on logging.
-				this.store.setInitialData(data);
-				
-				// if will be clicked on the other button (not next button).
-				if(this.currentStep != currentStep){
-					this.currentStep=currentStep;
+			// set to the global store;
+			this.store.setData(data);
 
-					if($container.contains($stepTwoDiv)) $container.removeChild($stepTwoDiv);
-					if($container.contains($stepThreeDiv)) $container.removeChild($stepThreeDiv);
+			// set as initial data to the global store. Will use on logging.
+			this.store.setInitialData(data);
+				
+			// if will be clicked on the other button (not next button).
+			if(this.currentStep != currentStep){
+				this.currentStep=currentStep;
+
+				if($container.contains($stepTwoDiv)) $container.removeChild($stepTwoDiv);
+				if($container.contains($stepThreeDiv)) $container.removeChild($stepThreeDiv);
 					
-					this.store.clearCategoriesOptions();
-					this.store.clearLogs();
-				}
+				this.store.clearCategoriesOptions();
+				this.store.clearLogs();
+			}
 
-				// process data from the store, build the next step;
-				if(action && typeof action == 'function') action();
-				if(next && typeof next == 'function') next();
-			};
+			// process data from the store, build the next step;
+			if(action && typeof action == 'function') action();
+			if(next && typeof next == 'function') next();
+		};
 
 		let buttonDiv = getDiv('form-group');
 		buttonDiv.append(button);
@@ -302,7 +302,7 @@ export let Builder = (function(){
 	 */
 	function getDiv(className){
 		let div = document.createElement('div');
-			div.setAttribute('class', className);
+		    div.setAttribute('class', className);
 		return div;
 	}
 
