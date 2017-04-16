@@ -15,9 +15,13 @@ export let Processor = (function(){
 
 	Processor.prototype.parseCategories = function(){
 		let data = this.store.getData();
-		data="Above Grade Level delivery [method] quality tutoring assistance with some of the best [subject] tutors in [location].";
+		data="Above Grade Level delivery  || [method] [method] || quality tutoring assistance with some of the best [subject] tutors in [location].";
 		this.store.setInitialData(data);
-		this.store.setCategories(data.match(REGEXP_MATCH_BRACKETS_DATA));
+		this.store.setCategories(
+			this.store.createUniqueArr(
+				data.match(REGEXP_MATCH_BRACKETS_DATA)
+			)
+		);
 	};
 
 	Processor.prototype.parseCategoryOptions = function(){
@@ -25,7 +29,10 @@ export let Processor = (function(){
 
 		for(let i in data) {	
 			let options = data[i].data.split(REGEXP_MATCH_OPTIONS);
-			options = options.map(option => option.replace('\n',''));
+			options = this.store.createUniqueArr(
+				options.map(option => option.replace('\n',''))
+			);
+
 			this.store.setCategoriesOptions(
 				data[i].index,
 				options,
@@ -35,31 +42,53 @@ export let Processor = (function(){
 
 	Processor.prototype.log = function(){
 		let categoriesOptions = this.store.getCategoriesOptions();
-		let c = 1;
-		let divs = [];
-		divs[categoriesOptions.length-1] = 1;
+		let results = getAllCombinations(categoriesOptions, results);
 
-		for(let i = categoriesOptions.length-2; i >=0 ; i--){
-			divs[i]=divs[i+1]*categoriesOptions[i].length;
-		}
+		let strResults = [];
 
-		for(let i = 0; i< categoriesOptions.length; i++){
-			c*=categoriesOptions[i].length;
-		}
-
-		let j = 0;
-		let results=[];
-		while (j<c){
-			results.push(this.store.getInitialData());
-			for(let k =0; k<categoriesOptions.length; k++){
-				let replaceIndex = Math.floor((j/divs[k])%(categoriesOptions[k].length));
-				let category=this.store.getCategories()[k];
-				results[results.length-1] = results[results.length-1]
-											.replace(new RegExp('\\['+category+'\\]','g'), categoriesOptions[k][replaceIndex]);
+		for(let i in results){
+			strResults.push(this.store.getInitialData());
+			for(let j in results[i]){
+				let category=this.store.getCategories()[j];
+				strResults[strResults.length-1] = strResults[strResults.length-1]
+															.replace(
+																new RegExp('\\['+category+'\\]','g'),
+																results[i][j]
+															);			
 			}
-			j++;
 		}
+
+		this.store.pushLogs(strResults);
 	};
+
+	function getAllCombinations(arraysToCombine) {
+		var divisors = [];
+		for (var i = arraysToCombine.length - 1; i >= 0; i--) {
+		    divisors[i] = divisors[i + 1] ? divisors[i + 1] * arraysToCombine[i + 1].length : 1;
+		}
+
+		function getPermutation(n, arraysToCombine) {
+		    var result = [], 
+		   		curArray;    
+		    for (var i = 0; i < arraysToCombine.length; i++) {
+		        curArray = arraysToCombine[i];
+		       	result.push(curArray[Math.floor(n / divisors[i]) % curArray.length]);
+			}    
+		    return result;
+		} 
+
+		var numPerms = arraysToCombine[0].length;
+		for(var i = 1; i < arraysToCombine.length; i++) {
+			numPerms *= arraysToCombine[i].length;
+		}
+
+		let results=[];
+		for(var i = 0; i < numPerms; i++) {
+		    results.push(getPermutation(i, arraysToCombine));
+		}
+
+		return results;
+	}
 
 	return Processor;
 })();

@@ -41,16 +41,28 @@ export let Store=(function(){
 		this.log = [];
 	}
 
-	Store.prototype.pushLog = function(log){
-		this.log.push(log);
+	Store.prototype.pushLogs = function(logs){
+		this.log = logs;
 	}
 
+	Store.prototype.getLogs = function(){
+		return this.log;
+	}
+	
 	Store.prototype.setInitialData = function(data) {
 		this.initialData = data;
 	}
 
 	Store.prototype.getInitialData = function(){
 		return this.initialData;
+	}
+
+	// HELPER ... 
+	Store.prototype.createUniqueArr = function(a) {
+	    var temp = {};
+	    for (var i = 0; i < a.length; i++)
+	        temp[a[i]] = true;
+	    return Object.keys(temp);
 	}
 
 	return Store;
