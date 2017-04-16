@@ -144,7 +144,7 @@ export let Builder = (function(){
 	 * Creates the first input. Where the categories will be set. 
 	 * Build the DOM.
 	 * @param  {Function} action 	- function of Processor. Parse data from the global store.
-	 * @param  {Function} next 		- function of Builder. Build the next step. 
+	 * @param  {Function} next 	- function of Builder. Build the next step. 
 	 * @return {undefined}
 	 */
 	Builder.prototype.initInput = function(action, next, currentStep){
