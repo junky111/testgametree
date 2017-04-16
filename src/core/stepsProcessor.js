@@ -97,12 +97,12 @@ export let Processor = (function(){
 				let category=this.store.getCategories()[j];
 				// replace category name with option by option index from result array.
 				strResults[strResults.length-1] = strResults[strResults.length-1]
-															.replace(
-																// find all matches.
-																new RegExp('\\['+category+'\\]','g'),
-																// option to paste
-																results[i][j]
-															);			
+													.replace(
+														// find all matches.
+														new RegExp('\\['+category+'\\]','g'),
+														// option to paste
+														results[i][j]
+													);			
 			}
 		}
 
@@ -112,8 +112,8 @@ export let Processor = (function(){
 
 	/**
 	 * Get all possible combinations in the array of arrays 
-	 * @param  { Array { Array, Array, .. } } arraysToCombine 	- arrays is necessary to combine.
-	 * @return {Array} 											- all possible combinations.
+	 * @param  { Array { Array, Array, .. } } arraysToCombine  - arrays is necessary to combine.
+	 * @return {Array} 										   - all possible combinations.
 	 */
 	function getAllCombinations(arraysToCombine) {
 		let divisors = [];
