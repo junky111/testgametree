@@ -161,8 +161,7 @@ export let Builder = (function(){
 			button.onclick = ()=>{
 				// get input data;
 				let data = input.value ? input.value : "";
-				console.log(data);
-
+				
 				// set to the global store;
 				this.store.setData(data);
 
