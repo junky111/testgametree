@@ -3,7 +3,10 @@ import {
 	REGEXP_MATCH_OPTIONS,
 } from './regexpConfig';
 
-
+/**
+ * Processor of application. Functional core of data manipulation.  
+ * @return {Constructor}  contructor of Processor.         
+ */
 export let Processor = (function(){
 	function Processor(store){
 		this.store = store;
@@ -15,8 +18,6 @@ export let Processor = (function(){
 
 	Processor.prototype.parseCategories = function(){
 		let data = this.store.getData();
-		// data="Above Grade Level delivery  || [method] [method] || quality tutoring assistance with some of the best [subject] tutors in [location].";
-		// this.store.setInitialData(data);
 		
 		let matchResults = data.match(REGEXP_MATCH_BRACKETS_DATA);
 		if(!matchResults) matchResults=[];
